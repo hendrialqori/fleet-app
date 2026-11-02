@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AppMainLayout from "@/layouts/app/app-main-layout";
-import { EllipsisVertical, Plus, Trash, Image as ImageIcon } from "lucide-react";
+import { EllipsisVertical, Trash, Image as ImageIcon } from "lucide-react";
 import {
    Table,
    TableBody,
@@ -15,16 +14,13 @@ import {
    Dialog,
    DialogContent,
    DialogDescription,
-   DialogFooter,
    DialogHeader,
    DialogTitle,
    DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldGroup } from "@/components/ui/field";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { FindingReportSheet } from "./components/finding-report-sheet";
 
 // Data sampel menggunakan gambar placeholder agar preview berfungsi
 const activityLogs = [
@@ -116,54 +112,7 @@ export default function Page() {
                <CardTitle>Log Aktivitas Driver</CardTitle>
                <CardDescription>Monitoring riwayat perjalanan, odometer, dan catatan pengisian BBM kendaraan</CardDescription>
                <CardAction>
-                  <Dialog>
-                     <DialogTrigger asChild>
-                        <Button>
-                           <Plus />
-                           Buat Report Temuan
-                        </Button>
-                     </DialogTrigger>
-                     <DialogContent>
-                        <DialogHeader>
-                           <DialogTitle>Tambah Log Aktivitas</DialogTitle>
-                           <DialogDescription>Masukkan data aktivitas atau laporan driver dengan benar</DialogDescription>
-                        </DialogHeader>
-                        <form>
-                           <FieldGroup>
-                              <Field>
-                                 <Label htmlFor="tanggal">Tanggal & Waktu</Label>
-                                 <Input id="tanggal" name="tanggal" placeholder="Contoh: 24/09/2026 07:00:00" />
-                              </Field>
-                              <Field>
-                                 <Label htmlFor="plat">Plat Kendaraan</Label>
-                                 <Input id="plat" name="plat" placeholder="Contoh: KB 8134 CF" />
-                              </Field>
-                              <Field>
-                                 <Label htmlFor="fotoBbm0">Bukti Foto Pengisian BBM (Dari 0)</Label>
-                                 <Input id="fotoBbm0" name="fotoBbm0" type="file" />
-                              </Field>
-                              <Field>
-                                 <Label htmlFor="odoAwal">Bukti Foto Odometer Awal</Label>
-                                 <Input id="odoAwal" name="odoAwal" type="file" />
-                              </Field>
-                              <Field>
-                                 <Label htmlFor="odoAkhir">Bukti Foto Odometer Akhir</Label>
-                                 <Input id="odoAkhir" name="odoAkhir" type="file" />
-                              </Field>
-                              <Field>
-                                 <Label htmlFor="notaBbm">Bukti Foto Nota Pengisian BBM</Label>
-                                 <Input id="notaBbm" name="notaBbm" type="file" />
-                              </Field>
-                              <DialogFooter>
-                                 <DialogClose asChild>
-                                    <Button variant="outline">Batal</Button>
-                                 </DialogClose>
-                                 <Button type="submit">Simpan</Button>
-                              </DialogFooter>
-                           </FieldGroup>
-                        </form>
-                     </DialogContent>
-                  </Dialog>
+                  <FindingReportSheet />
                </CardAction>
             </CardHeader>
             <CardContent>

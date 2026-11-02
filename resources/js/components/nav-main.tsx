@@ -13,6 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Link, usePage } from "@inertiajs/react"
 import { ChevronRightIcon } from "lucide-react"
 
 export function NavMain({
@@ -29,6 +30,9 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const { url } = usePage()
+  const isCurrent = (href: string) => href !== "#" && url.split("?")[0] === href
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -37,7 +41,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            defaultOpen={item.isActive || item.items?.some((subItem) => isCurrent(subItem.url))}
             className="group/collapsible"
           >
             <SidebarMenuItem>
@@ -52,10 +56,17 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
+                      <SidebarMenuSubButton asChild isActive={isCurrent(subItem.url)}>
+                        {/* Url placeholder "#" tidak perlu request Inertia */}
+                        {subItem.url === "#" ? (
+                          <a href="#">
+                            <span>{subItem.title}</span>
+                          </a>
+                        ) : (
+                          <Link href={subItem.url} prefetch>
+                            <span>{subItem.title}</span>
+                          </Link>
+                        )}
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

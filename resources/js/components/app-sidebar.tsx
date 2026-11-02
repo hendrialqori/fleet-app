@@ -46,7 +46,7 @@ const data = {
         },
         {
           title: "Log Aktivitas Driver",
-          url: "log-activity-driver",
+          url: "/log-activity-driver",
         },
       ],
     },
