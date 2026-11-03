@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, ChartSpline, Database, Settings2Icon } from "lucide-react"
+import { GalleryVerticalEndIcon, ChartSpline, Database, Settings2Icon, Truck } from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -33,7 +33,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Dashboard",
+      title: "Menu Utama",
       url: "#",
       icon: (
         <ChartSpline />
@@ -54,6 +54,19 @@ const data = {
         },
       ],
     },
+    // {
+    //   title: "Monitoring",
+    //   url: "#",
+    //   icon: (
+    //     <Truck />
+    //   ),
+    //   items: [
+    //     {
+    //       title: "Cartrack Monitoring",
+    //       url: "/cartrack-monitoring",
+    //     },
+    //   ],
+    // },
     {
       title: "Master Data",
       url: "#",

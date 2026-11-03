@@ -1,0 +1,64 @@
+/* Warna header grup monitoring (meniru form Excel) */
+.mon-c-navy { --mon-color: #1f3864; }
+.mon-c-blue { --mon-color: #2f75b5; }
+.mon-c-orange { --mon-color: #ed7d31; }
+.mon-c-purple { --mon-color: #7030a0; }
+.mon-c-dark-green { --mon-color: #375623; }
+.mon-c-teal { --mon-color: #008080; }
+.mon-c-red { --mon-color: #c00000; }
+.mon-c-dark-orange { --mon-color: #c55a11; }
+.mon-c-green { --mon-color: #548235; }
+
+.monitoring-grid .ag-header-group-cell.mon-group {
+   background-color: var(--mon-color);
+   color: #fff;
+}
+
+.monitoring-grid .ag-header-group-cell.mon-group .ag-header-group-cell-label {
+   justify-content: center;
+   white-space: normal;
+   text-align: center;
+}
+
+.monitoring-grid .ag-header-cell.mon-sub {
+   background-color: color-mix(in srgb, var(--mon-color) 22%, #fff);
+   color: #111;
+}
+
+.monitoring-grid .ag-header-cell.mon-sub.mon-c-navy {
+   background-color: var(--mon-color);
+   color: #fff;
+}
+
+.monitoring-grid .ag-header-cell-label {
+   justify-content: center;
+   text-align: center;
+}
+
+/* Wrap teks header tanpa autoHeaderHeight (tinggi header tetap di monitoring-grid.tsx) */
+.monitoring-grid .ag-header-cell-text {
+   white-space: normal;
+   text-overflow: clip;
+   line-height: 1.2;
+}
+
+/* Kolom hasil hitungan (read-only) */
+.monitoring-grid .ag-cell.mon-computed {
+   background-color: #fce4d6;
+}
+
+.monitoring-grid .ag-cell.mon-center {
+   text-align: center;
+}
+
+.monitoring-grid .ag-cell.mon-status-normal {
+   background-color: #e2efda;
+   color: #2e7d32;
+   font-weight: 700;
+}
+
+.monitoring-grid .ag-cell.mon-status-temuan {
+   background-color: #ffd7d7;
+   color: #c00000;
+   font-weight: 700;
+}

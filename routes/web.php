@@ -19,6 +19,10 @@ Route::get('finding-reports', function () {
     return Inertia::render('finding-report');
 })->name('finding-reports');
 
+Route::get('cartrack-monitoring', function () {
+    return Inertia::render('cartrack-monitoring');
+})->name('cartrack-monitoring');
+
 Route::get('fleet', function () {
     return Inertia::render('fleet');
 })->name('fleet');
