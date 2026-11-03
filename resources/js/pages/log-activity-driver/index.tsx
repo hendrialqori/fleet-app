@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { format } from "date-fns";
+import { DateRangePicker, type DateRange } from "@/components/date-range-picker";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AppMainLayout from "@/layouts/app/app-main-layout";
@@ -20,11 +24,14 @@ import {
 } from "@/components/ui/dialog"
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { vehicles } from "@/data/drivers";
 
 // Data sampel menggunakan gambar placeholder agar preview berfungsi
 const activityLogs = [
    {
       id: 1,
+      mengisi: false,
       tanggal: "23/09/2026 18:58:12",
       platKendaraan: "KB 8546 YL",
       fotoBbm0: null,
@@ -34,6 +41,7 @@ const activityLogs = [
    },
    {
       id: 2,
+      mengisi: false,
       tanggal: "23/09/2026 19:04:44",
       platKendaraan: "KB 8239 YM",
       fotoBbm0: null,
@@ -43,6 +51,7 @@ const activityLogs = [
    },
    {
       id: 3,
+      mengisi: true,
       tanggal: "24/09/2026 06:07:45",
       platKendaraan: "KB 8417 YM",
       fotoBbm0: "https://images.unsplash.com/photo-1527012077209-b411333cda4a?w=800",
@@ -52,6 +61,7 @@ const activityLogs = [
    },
    {
       id: 4,
+      mengisi: false,
       tanggal: "24/09/2026 06:44:34",
       platKendaraan: "KB 8546 YL",
       fotoBbm0: null,
@@ -61,6 +71,7 @@ const activityLogs = [
    },
    {
       id: 5,
+      mengisi: true,
       tanggal: "24/09/2026 07:15:48",
       platKendaraan: "KB 8145 YM",
       fotoBbm0: null,
@@ -69,6 +80,14 @@ const activityLogs = [
       fotoNotaBbm: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800"
    },
 ];
+
+type StatusFilter = "all" | "mengisi" | "tidak-mengisi";
+
+// Tanggal log berformat dd/MM/yyyy HH:mm:ss, ambil bagian tanggal sebagai yyyy-MM-dd agar mudah dibandingkan
+const toIsoDate = (tanggal: string) => {
+   const [day, month, year] = tanggal.split(" ")[0].split("/");
+   return `${year}-${month}-${day}`;
+};
 
 // Component Reusable untuk Preview Gambar Thumbnail + Dialog Zoom
 function ImagePreviewDialog({ src, title }: { src: string | null; title: string }) {
@@ -104,6 +123,20 @@ function ImagePreviewDialog({ src, title }: { src: string | null; title: string 
 }
 
 export default function Page() {
+   const [range, setRange] = useState<DateRange | undefined>();
+   const [noPolisi, setNoPolisi] = useState("all");
+   const [status, setStatus] = useState<StatusFilter>("all");
+
+   const filteredLogs = activityLogs.filter((log) => {
+      if (range?.from) {
+         const tanggal = toIsoDate(log.tanggal);
+         if (tanggal < format(range.from, "yyyy-MM-dd") || tanggal > format(range.to ?? range.from, "yyyy-MM-dd")) return false;
+      }
+      if (noPolisi !== "all" && log.platKendaraan !== noPolisi) return false;
+      if (status !== "all" && log.mengisi !== (status === "mengisi")) return false;
+      return true;
+   });
+
    return (
       <AppMainLayout>
          <Card>
@@ -111,12 +144,41 @@ export default function Page() {
                <CardTitle>Log Aktivitas Driver</CardTitle>
                <CardDescription>Monitoring riwayat perjalanan, odometer, dan catatan pengisian BBM kendaraan</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-4">
+               <div className="flex flex-wrap items-center gap-2">
+                  <DateRangePicker value={range} onChange={setRange} />
+                  <Select value={noPolisi} onValueChange={setNoPolisi}>
+                     <SelectTrigger className="w-44">
+                        <SelectValue />
+                     </SelectTrigger>
+                     <SelectContent position="popper">
+                        <SelectGroup>
+                           <SelectItem value="all">Semua No Polisi</SelectItem>
+                           {vehicles.map((item) => (
+                              <SelectItem key={item} value={item}>{item}</SelectItem>
+                           ))}
+                        </SelectGroup>
+                     </SelectContent>
+                  </Select>
+                  <Select value={status} onValueChange={(value) => setStatus(value as StatusFilter)}>
+                     <SelectTrigger className="w-44">
+                        <SelectValue />
+                     </SelectTrigger>
+                     <SelectContent position="popper">
+                        <SelectGroup>
+                           <SelectItem value="all">Semua Status</SelectItem>
+                           <SelectItem value="mengisi">Mengisi</SelectItem>
+                           <SelectItem value="tidak-mengisi">Tidak Mengisi</SelectItem>
+                        </SelectGroup>
+                     </SelectContent>
+                  </Select>
+               </div>
                <Table>
                   <TableHeader>
                      <TableRow>
                         <TableHead>Tanggal</TableHead>
                         <TableHead>Plat Kendaraan</TableHead>
+                        <TableHead>Status Pengisian</TableHead>
                         <TableHead>Foto BBM (Dari 0)</TableHead>
                         <TableHead>Odometer Awal</TableHead>
                         <TableHead>Odometer Akhir</TableHead>
@@ -125,10 +187,22 @@ export default function Page() {
                      </TableRow>
                   </TableHeader>
                   <TableBody>
-                     {activityLogs.map((log) => (
+                     {filteredLogs.length === 0 && (
+                        <TableRow>
+                           <TableCell colSpan={8} className="py-10 text-center text-muted-foreground">
+                              Tidak ada log aktivitas yang sesuai filter
+                           </TableCell>
+                        </TableRow>
+                     )}
+                     {filteredLogs.map((log) => (
                         <TableRow key={log.id}>
                            <TableCell className="font-medium whitespace-nowrap">{log.tanggal}</TableCell>
                            <TableCell className="whitespace-nowrap">{log.platKendaraan}</TableCell>
+                           <TableCell>
+                              <Badge variant={log.mengisi ? "default" : "outline"} className={log.mengisi ? "bg-lime-500 text-white" : ""}>
+                                 {log.mengisi ? "Mengisi" : "Tidak Mengisi"}
+                              </Badge>
+                           </TableCell>
                            <TableCell>
                               <ImagePreviewDialog
                                  src={log.fotoBbm0}
