@@ -23,6 +23,10 @@ Route::get('driver', function () {
     return Inertia::render('driver');
 })->name('driver');
 
+Route::get('sign-in', function () {
+    return Inertia::render('sign-in');
+})->name('sign-in');
+
 // Route::middleware(['auth'])->group(function () {
 
 // });
