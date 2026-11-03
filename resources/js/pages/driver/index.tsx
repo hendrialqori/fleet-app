@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AppMainLayout from "@/layouts/app/app-main-layout";
-import { EllipsisVertical, Pencil, Plus, Trash, AlertTriangle } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { EllipsisVertical, Eye, Pencil, Plus, Trash } from "lucide-react";
 import {
 	Table,
 	TableBody,
@@ -27,8 +27,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { DriverDetailSheet, type Driver } from "./components/driver-detail-sheet";
 
-const drivers = [
+const driverList = [
 	{ noPolisi: "KB 8082 CG", nama: "ANGGA HARI MUKTI" },
 	{ noPolisi: "KB 8546 YL", nama: "BERNANDUS DESI SUSANTO" },
 	{ noPolisi: "KB 8259 CE", nama: "DERY ARIANDI" },
@@ -49,16 +50,17 @@ const drivers = [
 	// { noPolisi: "-", nama: "MUHAMMAD ARIF KENCESARI" },
 ];
 
-// Helper function untuk membuat inisial avatar (maksimal 2 huruf)
-const getInitials = (name: string) => {
-	const parts = name.trim().split(" ");
-	if (parts.length >= 2) {
-		return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-	}
-	return name.substring(0, 2).toUpperCase();
-};
+// Akun login dummy sampai data dari backend tersedia
+const drivers: Driver[] = driverList.map((driver) => ({
+	...driver,
+	username: driver.nama.split(" ")[0].toLowerCase(),
+	password: `Pb1#${driver.noPolisi.replace(/\s/g, "").slice(-4)}`,
+}));
+
 
 export default function Page() {
+	const [selected, setSelected] = useState<Driver | null>(null);
+
 	return (
 		<AppMainLayout>
 			<Card>
@@ -123,7 +125,6 @@ export default function Page() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-[80px]">Avatar</TableHead>
 								<TableHead>Nomor Polisi</TableHead>
 								<TableHead>Nama</TableHead>
 								<TableHead className="text-right pr-5">Aksi</TableHead>
@@ -132,13 +133,6 @@ export default function Page() {
 						<TableBody>
 							{drivers.map((driver, index) => (
 								<TableRow key={index}>
-									<TableCell>
-										<Avatar className="h-9 w-9">
-											<AvatarFallback className="text-xs bg-muted font-semibold">
-												{getInitials(driver.nama)}
-											</AvatarFallback>
-										</Avatar>
-									</TableCell>
 									<TableCell>{driver.noPolisi}</TableCell>
 									<TableCell className="font-medium">{driver.nama}</TableCell>
 									<TableCell className="text-right">
@@ -149,6 +143,10 @@ export default function Page() {
 												</Button>
 											</PopoverTrigger>
 											<PopoverContent className="w-25 p-1 gap-1" align="end">
+												<Button variant="outline" className="justify-start" size="sm" onClick={() => setSelected(driver)}>
+													<Eye />
+													Detail
+												</Button>
 												<Button variant="outline" className="justify-start" size="sm">
 													<Pencil />
 													Edit
@@ -184,6 +182,11 @@ export default function Page() {
 					</Table>
 				</CardContent>
 			</Card>
+
+			<DriverDetailSheet
+				driver={selected}
+				onOpenChange={(open) => !open && setSelected(null)}
+			/>
 		</AppMainLayout>
 	)
 }
