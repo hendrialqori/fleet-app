@@ -48,6 +48,10 @@ const data = {
           title: "Log Aktivitas Driver",
           url: "/log-activity-driver",
         },
+        {
+          title: "Laporan Temuan",
+          url: "/finding-reports",
+        },
       ],
     },
     {

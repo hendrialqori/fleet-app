@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AppMainLayout from "@/layouts/app/app-main-layout";
 import { EllipsisVertical, Trash, Image as ImageIcon } from "lucide-react";
 import {
@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/dialog"
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { FindingReportSheet } from "./components/finding-report-sheet";
 
 // Data sampel menggunakan gambar placeholder agar preview berfungsi
 const activityLogs = [
@@ -111,9 +110,6 @@ export default function Page() {
             <CardHeader>
                <CardTitle>Log Aktivitas Driver</CardTitle>
                <CardDescription>Monitoring riwayat perjalanan, odometer, dan catatan pengisian BBM kendaraan</CardDescription>
-               <CardAction>
-                  <FindingReportSheet />
-               </CardAction>
             </CardHeader>
             <CardContent>
                <Table>

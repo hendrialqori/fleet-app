@@ -15,6 +15,10 @@ Route::get('log-activity-driver', function () {
     return Inertia::render('log-activity-driver');
 })->name('log-activity-driver');
 
+Route::get('finding-reports', function () {
+    return Inertia::render('finding-report');
+})->name('finding-reports');
+
 Route::get('fleet', function () {
     return Inertia::render('fleet');
 })->name('fleet');

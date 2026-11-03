@@ -41,8 +41,8 @@ export function FindingCard({ index, finding, showErrors, canRemove, onChange, o
                </Button>
             </CardAction>
          </CardHeader>
-         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-[10rem_7rem_1fr_1fr_14rem]">
-            <div className="flex flex-col gap-2">
+         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-6">
+            <div className="flex flex-col gap-2 md:col-span-2">
                <Label htmlFor={`${prefix}-nopol`}>No Polisi/Unit</Label>
                <Select value={finding.noPolisi} onValueChange={handleNoPolisiChange}>
                   <SelectTrigger id={`${prefix}-nopol`} className="w-full" aria-invalid={invalid(finding.noPolisi)}>
@@ -57,36 +57,7 @@ export function FindingCard({ index, finding, showErrors, canRemove, onChange, o
                   </SelectContent>
                </Select>
             </div>
-            <div className="flex flex-col gap-2">
-               <Label htmlFor={`${prefix}-waktu`}>Waktu</Label>
-               <Input
-                  id={`${prefix}-waktu`}
-                  type="time"
-                  value={finding.waktu}
-                  aria-invalid={invalid(finding.waktu)}
-                  onChange={(e) => update({ waktu: e.target.value })}
-               />
-            </div>
-            <div className="flex flex-col gap-2">
-               <Label htmlFor={`${prefix}-kendala`}>Kendala</Label>
-               <Textarea
-                  id={`${prefix}-kendala`}
-                  placeholder="Contoh: Selisih BBM 6,29 liter"
-                  value={finding.kendala}
-                  aria-invalid={invalid(finding.kendala)}
-                  onChange={(e) => update({ kendala: e.target.value })}
-               />
-            </div>
-            <div className="flex flex-col gap-2">
-               <Label htmlFor={`${prefix}-keterangan`}>Keterangan</Label>
-               <Textarea
-                  id={`${prefix}-keterangan`}
-                  placeholder="Contoh: Pada sistem cartrack BBM terisi 18,51 liter, namun nota BBM 24,80 liter"
-                  value={finding.keterangan}
-                  onChange={(e) => update({ keterangan: e.target.value })}
-               />
-            </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 md:col-span-2">
                <Label htmlFor={`${prefix}-driver`}>Driver</Label>
                <Select value={finding.driver} onValueChange={(driver) => update({ driver })}>
                   <SelectTrigger id={`${prefix}-driver`} className="w-full" aria-invalid={invalid(finding.driver)}>
@@ -100,6 +71,35 @@ export function FindingCard({ index, finding, showErrors, canRemove, onChange, o
                      </SelectGroup>
                   </SelectContent>
                </Select>
+            </div>
+            <div className="flex flex-col gap-2 md:col-span-2">
+               <Label htmlFor={`${prefix}-waktu`}>Waktu</Label>
+               <Input
+                  id={`${prefix}-waktu`}
+                  type="time"
+                  value={finding.waktu}
+                  aria-invalid={invalid(finding.waktu)}
+                  onChange={(e) => update({ waktu: e.target.value })}
+               />
+            </div>
+            <div className="flex flex-col gap-2 md:col-span-3">
+               <Label htmlFor={`${prefix}-kendala`}>Kendala</Label>
+               <Textarea
+                  id={`${prefix}-kendala`}
+                  placeholder="Contoh: Selisih BBM 6,29 liter"
+                  value={finding.kendala}
+                  aria-invalid={invalid(finding.kendala)}
+                  onChange={(e) => update({ kendala: e.target.value })}
+               />
+            </div>
+            <div className="flex flex-col gap-2 md:col-span-3">
+               <Label htmlFor={`${prefix}-keterangan`}>Keterangan</Label>
+               <Textarea
+                  id={`${prefix}-keterangan`}
+                  placeholder="Contoh: Pada sistem cartrack BBM terisi 18,51 liter, namun nota BBM 24,80 liter"
+                  value={finding.keterangan}
+                  onChange={(e) => update({ keterangan: e.target.value })}
+               />
             </div>
          </CardContent>
 

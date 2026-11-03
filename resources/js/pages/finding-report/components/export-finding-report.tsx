@@ -170,7 +170,9 @@ function ReportDocument({ periode, findings, logo }: { periode: string; findings
    );
 }
 
-export async function exportFindingReport(periode: string, findings: Finding[]) {
+export const getReportFileName = (periode: string) => `form-temuan-monitoring-cartrack-${periode}.pdf`;
+
+export async function generateFindingReport(periode: string, findings: Finding[]) {
    const [logo, reportFindings] = await Promise.all([
       loadImage("/pb1.png", 48).then((image) => image.src),
       Promise.all(
@@ -182,11 +184,15 @@ export async function exportFindingReport(periode: string, findings: Finding[]) 
       ),
    ]);
 
-   const blob = await pdf(<ReportDocument periode={periode} findings={reportFindings} logo={logo} />).toBlob();
+   return pdf(<ReportDocument periode={periode} findings={reportFindings} logo={logo} />).toBlob();
+}
+
+export async function exportFindingReport(periode: string, findings: Finding[]) {
+   const blob = await generateFindingReport(periode, findings);
    const url = URL.createObjectURL(blob);
    const link = document.createElement("a");
    link.href = url;
-   link.download = `form-temuan-monitoring-cartrack-${periode}.pdf`;
+   link.download = getReportFileName(periode);
    link.click();
    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
