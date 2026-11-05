@@ -26,6 +26,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { vehicles } from "@/data/drivers";
+import { NoPolisiFilter, type NoPolisiSelection } from "./components/no-polisi-filter";
 
 // Data sampel menggunakan gambar placeholder agar preview berfungsi
 const activityLogs = [
@@ -124,7 +125,7 @@ function ImagePreviewDialog({ src, title }: { src: string | null; title: string 
 
 export default function Page() {
    const [range, setRange] = useState<DateRange | undefined>();
-   const [noPolisi, setNoPolisi] = useState("all");
+   const [noPolisi, setNoPolisi] = useState<NoPolisiSelection>("all");
    const [status, setStatus] = useState<StatusFilter>("all");
 
    const filteredLogs = activityLogs.filter((log) => {
@@ -132,7 +133,7 @@ export default function Page() {
          const tanggal = toIsoDate(log.tanggal);
          if (tanggal < format(range.from, "yyyy-MM-dd") || tanggal > format(range.to ?? range.from, "yyyy-MM-dd")) return false;
       }
-      if (noPolisi !== "all" && log.platKendaraan !== noPolisi) return false;
+      if (noPolisi !== "all" && !noPolisi.includes(log.platKendaraan)) return false;
       if (status !== "all" && log.mengisi !== (status === "mengisi")) return false;
       return true;
    });
@@ -147,19 +148,7 @@ export default function Page() {
             <CardContent className="flex flex-col gap-4">
                <div className="flex flex-wrap items-center gap-2">
                   <DateRangePicker value={range} onChange={setRange} />
-                  <Select value={noPolisi} onValueChange={setNoPolisi}>
-                     <SelectTrigger className="w-44">
-                        <SelectValue />
-                     </SelectTrigger>
-                     <SelectContent position="popper">
-                        <SelectGroup>
-                           <SelectItem value="all">Semua No Polisi</SelectItem>
-                           {vehicles.map((item) => (
-                              <SelectItem key={item} value={item}>{item}</SelectItem>
-                           ))}
-                        </SelectGroup>
-                     </SelectContent>
-                  </Select>
+                  <NoPolisiFilter options={vehicles} value={noPolisi} onChange={setNoPolisi} />
                   <Select value={status} onValueChange={(value) => setStatus(value as StatusFilter)}>
                      <SelectTrigger className="w-44">
                         <SelectValue />
