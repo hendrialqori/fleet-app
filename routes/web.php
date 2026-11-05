@@ -15,9 +15,9 @@ Route::get('log-activity-driver', function () {
     return Inertia::render('log-activity-driver');
 })->name('log-activity-driver');
 
-Route::get('finding-reports', function () {
-    return Inertia::render('finding-report');
-})->name('finding-reports');
+Route::get('finding-reports-fleet', function () {
+    return Inertia::render('finding-reports-fleet');
+})->name('finding-reports-fleet');
 
 Route::get('cartrack-monitoring', function () {
     return Inertia::render('cartrack-monitoring');

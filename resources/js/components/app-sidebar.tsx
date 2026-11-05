@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, ChartSpline, Database, Settings2Icon, Truck } from "lucide-react"
+import { GalleryVerticalEndIcon, ChartSpline, Database, Settings2Icon, ClipboardListIcon, Truck  } from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -33,7 +33,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Menu Utama",
+      title: "Dashboard",
       url: "#",
       icon: (
         <ChartSpline />
@@ -41,16 +41,8 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Ikhtisar",
+          title: "Rekap",
           url: "#",
-        },
-        {
-          title: "Log Aktivitas Driver",
-          url: "/log-activity-driver",
-        },
-        {
-          title: "Laporan Temuan",
-          url: "/finding-reports",
         },
       ],
     },
@@ -67,6 +59,27 @@ const data = {
     //     },
     //   ],
     // },
+    {
+      title: "Laporan",
+      url: "#",
+      icon: (
+        <ClipboardListIcon />
+      ),
+      items: [
+         {
+          title: "Log Aktivitas Driver",
+          url: "/log-activity-driver",
+        },
+        {
+          title: "Temuan Admin Fleet",
+          url: "/finding-reports-fleet",
+        },
+        // {
+        //   title: "Temuan Admin IT",
+        //   url: "/finding-reports-fleet",
+        // }
+      ],
+    },
     {
       title: "Master Data",
       url: "#",
